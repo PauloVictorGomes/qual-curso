@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Modo aventura · Qual curso combina com você?</title>
+  <link rel="icon" href="data:,">
+  <script src="tema-inicial.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="jogo.css">
+</head>
+<body>
+  <header class="topo">
+    <a class="logo logo-link" href="index.html"><span class="logo-marca" aria-hidden="true"></span>Qual curso combina com você?</a>
+    <button id="btn-tema" class="btn-tema" type="button" aria-label="Mudar tema">
+      <svg class="icone-lua" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+      </svg>
+      <svg class="icone-sol" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>
+        </g>
+      </svg>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. ESCOLHER O MUNDO -->
+    <section id="tela-mundos" class="tela">
+      <p class="sobretitulo">Modo aventura</p>
+      <h1>Escolha o seu <span class="grifo">mundo</span></h1>
+      <p class="lead">
+        Você vai viver uma história e tomar decisões. Não tem escolha certa ou errada:
+        escolha o que <em>você</em> faria de verdade.
+      </p>
+      <div id="entrada"></div>
+      <div id="lista-mundos" class="lista-mundos"></div>
+      <a class="btn btn-link" href="index.html">← Prefiro o quiz rápido</a>
+    </section>
+
+    <!-- 2. ESCOLHER O PERSONAGEM -->
+    <section id="tela-personagem" class="tela" hidden>
+      <div class="banner-mundo">
+        <span id="banner-emoji" class="banner-emoji" aria-hidden="true"></span>
+        <div>
+          <p id="banner-genero" class="banner-genero"></p>
+          <h2 id="banner-nome"></h2>
+        </div>
+      </div>
+      <p id="mundo-intro" class="mundo-intro"></p>
+
+      <h3 class="titulo-secao">Com quem você vai jogar?</h3>
+      <p class="dica-secao">O personagem é só o visual: ele não muda o seu resultado.</p>
+      <div id="lista-personagens" class="lista-personagens" role="radiogroup" aria-label="Personagens"></div>
+
+      <div class="acoes">
+        <button id="btn-voltar-mundos" class="btn btn-link" type="button">← Outro mundo</button>
+        <button id="btn-iniciar" class="btn btn-primario" type="button" disabled>Começar a aventura</button>
+      </div>
+    </section>
+
+    <!-- 3. CENAS -->
+    <section id="tela-cena" class="tela" hidden>
+      <div class="cena-topo">
+        <span class="cena-jogador">
+          <span id="cena-avatar" class="cena-avatar" aria-hidden="true"></span>
+          <span id="cena-nome"></span>
+        </span>
+        <span id="cena-capitulo" class="contador" aria-live="polite"></span>
+      </div>
+      <div id="trilha" class="trilha" aria-hidden="true"></div>
+
+      <article id="cartao-cena" class="cartao cartao-cena">
+        <p id="cena-mundo" class="cena-mundo"></p>
+        <h2 id="cena-titulo"></h2>
+        <p id="cena-texto" class="cena-texto"></p>
+        <div id="cena-opcoes" class="opcoes" role="group" aria-labelledby="cena-titulo"></div>
+        <div id="cena-reacao" class="cena-reacao" hidden>
+          <p id="cena-reacao-texto" aria-live="polite"></p>
+          <button id="btn-continuar" class="btn btn-primario" type="button">Continuar →</button>
+        </div>
+      </article>
+      <p class="dica-teclado">Dica: você pode escolher com as teclas 1 a 4.</p>
+    </section>
+
+    <!-- 4. ACAMPAMENTO (perguntas abertas) -->
+    <section id="tela-acampamento" class="tela" hidden>
+      <p class="sobretitulo">Pausa na aventura</p>
+      <h2>Agora, um pouco sobre você</h2>
+      <p id="acampamento-texto" class="mundo-intro"></p>
+      <p class="lead">
+        Essas perguntas são sobre a sua vida real, fora do jogo. Escreva do seu jeito,
+        como se estivesse contando para um amigo.
+      </p>
+      <form id="form-abertas" novalidate></form>
+      <div class="acoes">
+        <span></span>
+        <button id="btn-finalizar" class="btn btn-primario" type="button">Ver minha revelação</button>
+      </div>
+    </section>
+
+    <!-- 5. RESULTADO: montado por resultado.js -->
+    <section id="tela-resultado" class="tela" hidden></section>
+
+  </main>
+
+  <script src="data/perguntas.js"></script>
+  <script src="data/profissoes.js"></script>
+  <script src="data/mundos/medieval.js"></script>
+  <script src="data/mundos/futurista.js"></script>
+  <script src="data/mundos/floresta.js"></script>
+  <script src="data/mundos/apocaliptico.js"></script>
+  <script src="nucleo.js"></script>
+  <script src="interface-comum.js"></script>
+  <script src="resultado.js"></script>
+  <script src="jogo.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Qual curso combina com você?</title>
+  <link rel="icon" href="data:,">
+  <script src="tema-inicial.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <span class="logo"><span class="logo-marca" aria-hidden="true"></span>Qual curso combina com você?</span>
+    <button id="btn-tema" class="btn-tema" type="button" aria-label="Mudar tema">
+      <svg class="icone-lua" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+      </svg>
+      <svg class="icone-sol" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>
+        </g>
+      </svg>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <!-- INTRO -->
+    <section id="tela-intro" class="tela">
+      <p class="sobretitulo">Para quem está escolhendo a faculdade</p>
+      <h1>Descubra cursos que <span class="grifo">combinam com você</span></h1>
+      <p class="lead">
+        No final, você recebe seu perfil, cursos para explorar e as áreas de atuação de cada um.
+        Se quiser, envia o resultado para receber um feedback personalizado.
+      </p>
+
+      <div id="entrada"></div>
+
+      <div class="modos">
+        <button id="btn-comecar" class="modo" type="button">
+          <span class="modo-emoji" aria-hidden="true">⚡</span>
+          <span class="modo-texto">
+            <strong>Quiz rápido</strong>
+            <span>24 perguntas diretas e 3 abertas · cerca de 5 min</span>
+          </span>
+          <span class="modo-seta" aria-hidden="true">→</span>
+        </button>
+        <a id="link-aventura" class="modo modo-aventura" href="jogo.html">
+          <span class="modo-emoji" aria-hidden="true">🗺️</span>
+          <span class="modo-texto">
+            <strong>Modo aventura</strong>
+            <span>Escolha um mundo e um personagem e tome decisões · cerca de 8 min</span>
+          </span>
+          <span class="modo-seta" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <ul class="chips">
+        <li>Sem resposta certa ou errada</li>
+        <li>Uma sugestão, não um veredito</li>
+      </ul>
+    </section>
+
+    <!-- PERGUNTAS (escala) -->
+    <section id="tela-quiz" class="tela" hidden>
+      <div class="quiz-topo">
+        <button id="btn-voltar" class="btn btn-link" type="button">← Voltar</button>
+        <p id="contador" class="contador" aria-live="polite"></p>
+      </div>
+      <div class="progresso" aria-hidden="true"><div id="barra-progresso"></div></div>
+
+      <div id="cartao-pergunta" class="cartao cartao-pergunta">
+        <p class="enunciado">Quanto isso tem a ver com você?</p>
+        <h2 id="pergunta-texto"></h2>
+        <div id="opcoes" class="opcoes" role="group" aria-labelledby="pergunta-texto"></div>
+      </div>
+
+      <p id="incentivo" class="incentivo" aria-live="polite"></p>
+      <p class="dica-teclado">Dica: você pode responder com as teclas 1 a 5.</p>
+    </section>
+
+    <!-- PERGUNTAS ABERTAS -->
+    <section id="tela-abertas" class="tela" hidden>
+      <p class="sobretitulo">Quase lá! Última etapa</p>
+      <h2>Agora, conte um pouco sobre você</h2>
+      <p class="lead">
+        Escreva do seu jeito, como se estivesse contando para um amigo.
+        Quanto mais detalhes, mais a análise fica com a sua cara.
+      </p>
+      <form id="form-abertas" novalidate></form>
+      <div class="acoes">
+        <button id="btn-voltar-abertas" class="btn btn-link" type="button">← Voltar</button>
+        <button id="btn-finalizar" class="btn btn-primario" type="button">Ver meu resultado</button>
+      </div>
+    </section>
+
+    <!-- RESULTADO: montado por resultado.js -->
+    <section id="tela-resultado" class="tela" hidden></section>
+
+  </main>
+
+  <script src="data/perguntas.js"></script>
+  <script src="data/profissoes.js"></script>
+  <script src="nucleo.js"></script>
+  <script src="interface-comum.js"></script>
+  <script src="resultado.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
