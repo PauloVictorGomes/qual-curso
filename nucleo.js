@@ -80,10 +80,11 @@ function perfisMaisFortes(perfis, quantos = 2) {
 
 // Texto simples do resultado, para a pessoa copiar e enviar, sem HTML.
 // respostas: [{ perfil, pergunta, resposta }]; cursos: saída de ranquearCursos.
-function montarTextoResultado({ participante, modo, data, perfis, nomesPerfis, cursos, respostas, perguntasAbertas, abertas }) {
+function montarTextoResultado({ codigo, participante, modo, data, perfis, nomesPerfis, cursos, respostas, perguntasAbertas, abertas }) {
   const naoInformado = "(não informado)";
   const linhas = [
     "RESULTADO DO QUIZ VOCACIONAL",
+    `Código: ${codigo}`,
     `Apelido: ${participante.apelido || naoInformado}`,
     `Faixa etária: ${participante.faixa || naoInformado}`,
     `Modo: ${modo}`,

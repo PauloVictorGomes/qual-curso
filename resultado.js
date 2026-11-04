@@ -2,6 +2,10 @@
 // Vazio: o WhatsApp abre com o texto pronto e a pessoa escolhe o contato.
 const WHATSAPP_NUMERO = "5521964287564";
 
+// Endereço do Apps Script que salva as respostas na planilha (termina em /exec).
+// Vazio: o botão "Enviar resultado" não aparece. Veja o README.md.
+const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B974rKcqbUf5Xnoh6pYgPjtpsZLddgpHMhSqJeRoe5__1WlZ4hxA/exec";
+
 // Tela de resultado compartilhada pelo quiz (index.html) e pelo jogo (jogo.html):
 // gráfico de perfis, cursos, organograma de áreas, envio do resultado e exportação em PDF.
 //
@@ -17,6 +21,7 @@ const WHATSAPP_NUMERO = "5521964287564";
   let perfisAtuais = null; // usado pelo organograma de áreas
   let cursosLocais = [];   // os 5 cursos mostrados no resultado
   let textoAtual = "";     // texto pronto para copiar e enviar
+  let envioAtual = null;   // dados do resultado para a planilha
 
   // ----- Marcação -----
   function marcacaoTela(titulo, textoRefazer) {
@@ -48,6 +53,13 @@ const WHATSAPP_NUMERO = "5521964287564";
           Envie o texto abaixo. Uma pessoa vai ler suas respostas e preparar um retorno para você.
           Só sai daqui o que você enviar, então confira o texto antes.
         </p>
+        <div id="bloco-planilha" hidden>
+          <button id="btn-enviar" class="btn btn-primario btn-enviar" type="button">Enviar resultado</button>
+          <p class="nota-enviar">
+            Ao enviar, suas respostas ficam salvas numa planilha privada do responsável pelo projeto.
+          </p>
+          <p id="enviar-status" class="copiar-status" role="status" aria-live="polite"></p>
+        </div>
         <div class="acoes-enviar">
           <button id="btn-copiar" class="btn btn-primario" type="button">Copiar meu resultado</button>
           <a id="btn-whatsapp" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
@@ -370,6 +382,38 @@ const WHATSAPP_NUMERO = "5521964287564";
     if (!copiou) copiarSemApi();
   }
 
+  // Texto puro não dispara a checagem prévia de CORS, que o Apps Script não atende
+  async function enviarParaPlanilha() {
+    const botao = $("btn-enviar");
+    const status = $("enviar-status");
+    botao.disabled = true;
+    botao.textContent = "Enviando…";
+    status.classList.remove("falhou");
+    status.textContent = "";
+    try {
+      const resp = await fetch(PLANILHA_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(envioAtual)
+      });
+      const dados = await resp.json();
+      if (!dados.ok) throw new Error(dados.erro || "falha");
+      botao.textContent = "Enviado ✓";
+      status.textContent = `Recebido! Seu código é ${envioAtual.codigo}. ` +
+        "Guarde esse código: com ele você pode pedir para apagar suas respostas.";
+    } catch (e) {
+      botao.disabled = false;
+      botao.textContent = "Tentar enviar de novo";
+      status.classList.add("falhou");
+      status.textContent = "Não consegui enviar agora. Tente de novo ou use os botões abaixo.";
+    }
+  }
+
+  function novoCodigo() {
+    const letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    return Array.from(crypto.getRandomValues(new Uint8Array(6)), n => letras[n % letras.length]).join("");
+  }
+
   function linkWhatsapp(texto) {
     return `https://wa.me/${WHATSAPP_NUMERO.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
   }
@@ -502,6 +546,11 @@ const WHATSAPP_NUMERO = "5521964287564";
     $("btn-cancelar-pdf").addEventListener("click", () => $("dialogo-pdf").close());
     $("btn-refazer").addEventListener("click", aoRefazer);
     $("btn-copiar").addEventListener("click", aoCopiar);
+    $("btn-enviar").addEventListener("click", enviarParaPlanilha);
+    if (PLANILHA_URL) {
+      $("bloco-planilha").hidden = false;
+      $("btn-copiar").classList.remove("btn-primario"); // o envio passa a ser a ação principal
+    }
     // Copia junto: se o WhatsApp não abrir com o texto, a pessoa ainda consegue colar
     $("btn-whatsapp").addEventListener("click", () => { copiarTexto(); });
     // Data no cabeçalho do PDF (vale também para Ctrl+P)
@@ -526,8 +575,11 @@ const WHATSAPP_NUMERO = "5521964287564";
 
     const nomesPerfis = {};
     LETRAS.forEach(l => { nomesPerfis[l] = PERFIS[l].nome; });
+    const codigo = novoCodigo();
+    const participante = Comum.participante();
     textoAtual = montarTextoResultado({
-      participante: Comum.participante(),
+      codigo,
+      participante,
       modo,
       data: new Date().toLocaleDateString("pt-BR"),
       perfis,
@@ -540,6 +592,21 @@ const WHATSAPP_NUMERO = "5521964287564";
     $("texto-resultado").value = textoAtual;
     $("btn-whatsapp").href = linkWhatsapp(textoAtual);
     $("copiar-status").textContent = "";
+
+    envioAtual = {
+      tipo: "quiz-vocacional-v1",
+      codigo,
+      modo,
+      apelido: participante.apelido,
+      faixa: participante.faixa,
+      perfis,
+      cursos: cursosLocais.map(c => c.nome).join("; "),
+      abertas,
+      texto: textoAtual
+    };
+    $("btn-enviar").disabled = false;
+    $("btn-enviar").textContent = "Enviar resultado";
+    $("enviar-status").textContent = "";
   }
 
   window.Resultado = {

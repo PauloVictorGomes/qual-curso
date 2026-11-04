@@ -1,0 +1,13 @@
+# Segredos e configuração local
+.env
+.env.*
+.vercel
+node_modules
+
+# Fica só neste computador: o repositório é público e tudo nele é acessível pelo site
+CLAUDE.md
+api/
+fixtures/
+scripts/
+teste/
+servidor-local.js

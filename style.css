@@ -596,6 +596,9 @@ body:has(.dialogo[open]) { overflow: hidden; }
 /* Enviar o resultado */
 .cartao-enviar p { margin: 0 0 14px; }
 .acoes-enviar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-enviar { width: 100%; }
+.btn-enviar:disabled { opacity: 0.7; cursor: default; }
+.cartao-enviar .nota-enviar { margin: 8px 0 0; font-size: 0.82rem; color: var(--suave); }
 .btn-whatsapp {
   display: flex; align-items: center; justify-content: center;
   text-align: center;
