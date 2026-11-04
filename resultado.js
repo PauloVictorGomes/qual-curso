@@ -3,7 +3,7 @@
 const WHATSAPP_NUMERO = "5521964287564";
 
 // Endereço do Apps Script que salva as respostas na planilha (termina em /exec).
-// Vazio: o botão "Enviar resultado" não aparece. Veja o README.md.
+// Vazio: nada é salvo ao finalizar. Veja o README.md.
 const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B974rKcqbUf5Xnoh6pYgPjtpsZLddgpHMhSqJeRoe5__1WlZ4hxA/exec";
 
 // Tela de resultado compartilhada pelo quiz (index.html) e pelo jogo (jogo.html):
@@ -48,21 +48,17 @@ const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B97
       </div>
 
       <div class="cartao destaque cartao-enviar">
+        <div id="bloco-planilha" class="bloco-planilha" hidden>
+          <p id="enviar-status" class="copiar-status" role="status" aria-live="polite"></p>
+          <button id="btn-enviar" class="btn btn-primario btn-enviar" type="button" hidden>Tentar salvar de novo</button>
+        </div>
         <h3>Quer um feedback personalizado?</h3>
         <p>
-          Envie o texto abaixo. Uma pessoa vai ler suas respostas e preparar um retorno para você.
-          Só sai daqui o que você enviar, então confira o texto antes.
+          Mande o texto abaixo pelo WhatsApp. Uma pessoa vai ler suas respostas e preparar um retorno para você.
         </p>
-        <div id="bloco-planilha" hidden>
-          <button id="btn-enviar" class="btn btn-primario btn-enviar" type="button">Enviar resultado</button>
-          <p class="nota-enviar">
-            Ao enviar, suas respostas ficam salvas numa planilha privada do responsável pelo projeto.
-          </p>
-          <p id="enviar-status" class="copiar-status" role="status" aria-live="polite"></p>
-        </div>
         <div class="acoes-enviar">
-          <button id="btn-copiar" class="btn btn-primario" type="button">Copiar meu resultado</button>
           <a id="btn-whatsapp" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <button id="btn-copiar" class="btn" type="button">Copiar meu resultado</button>
         </div>
         <p id="copiar-status" class="copiar-status" role="status" aria-live="polite"></p>
         <label class="rotulo-texto" for="texto-resultado">Texto que será enviado</label>
@@ -383,29 +379,29 @@ const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B97
   }
 
   // Texto puro não dispara a checagem prévia de CORS, que o Apps Script não atende
+  // Chamada ao finalizar o formulário. keepalive: o envio continua mesmo se a pessoa fechar a página.
   async function enviarParaPlanilha() {
+    if (!PLANILHA_URL || !envioAtual) return;
     const botao = $("btn-enviar");
     const status = $("enviar-status");
-    botao.disabled = true;
-    botao.textContent = "Enviando…";
+    botao.hidden = true;
     status.classList.remove("falhou");
-    status.textContent = "";
+    status.textContent = "Salvando suas respostas…";
     try {
       const resp = await fetch(PLANILHA_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(envioAtual)
+        body: JSON.stringify(envioAtual),
+        keepalive: true
       });
       const dados = await resp.json();
       if (!dados.ok) throw new Error(dados.erro || "falha");
-      botao.textContent = "Enviado ✓";
-      status.textContent = `Recebido! Seu código é ${envioAtual.codigo}. ` +
+      status.textContent = `Suas respostas foram salvas. Seu código é ${envioAtual.codigo}. ` +
         "Guarde esse código: com ele você pode pedir para apagar suas respostas.";
     } catch (e) {
-      botao.disabled = false;
-      botao.textContent = "Tentar enviar de novo";
+      botao.hidden = false;
       status.classList.add("falhou");
-      status.textContent = "Não consegui enviar agora. Tente de novo ou use os botões abaixo.";
+      status.textContent = "Não consegui salvar suas respostas. Confira a internet e tente de novo.";
     }
   }
 
@@ -547,10 +543,7 @@ const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B97
     $("btn-refazer").addEventListener("click", aoRefazer);
     $("btn-copiar").addEventListener("click", aoCopiar);
     $("btn-enviar").addEventListener("click", enviarParaPlanilha);
-    if (PLANILHA_URL) {
-      $("bloco-planilha").hidden = false;
-      $("btn-copiar").classList.remove("btn-primario"); // o envio passa a ser a ação principal
-    }
+    $("bloco-planilha").hidden = !PLANILHA_URL;
     // Copia junto: se o WhatsApp não abrir com o texto, a pessoa ainda consegue colar
     $("btn-whatsapp").addEventListener("click", () => { copiarTexto(); });
     // Data no cabeçalho do PDF (vale também para Ctrl+P)
@@ -604,14 +597,14 @@ const PLANILHA_URL = "https://script.google.com/macros/s/AKfycbxdPoJS0cck-lR8B97
       abertas,
       texto: textoAtual
     };
-    $("btn-enviar").disabled = false;
-    $("btn-enviar").textContent = "Enviar resultado";
+    $("btn-enviar").hidden = true;
     $("enviar-status").textContent = "";
   }
 
   window.Resultado = {
     iniciar,
     mostrar,
+    enviar: enviarParaPlanilha,
     // Atalhos usados pelo modo de teste
     teste: {
       abrirAreas(i) { if (cursosLocais[i]) abrirAreas(cursosLocais[i]); },

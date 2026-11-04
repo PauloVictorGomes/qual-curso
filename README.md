@@ -29,7 +29,7 @@ Vazio, o WhatsApp abre com o texto pronto e a pessoa escolhe o contato.
 
 ## Salvar as respostas numa planilha
 
-O botão "Enviar resultado" manda as respostas para uma planilha Google sua. Ele só aparece com a constante `PLANILHA_URL` preenchida.
+Ao tocar em "Finalizar formulário", as respostas vão para uma planilha Google sua, desde que a constante `PLANILHA_URL` esteja preenchida. Depois disso, a pessoa pode mandar o resultado pelo WhatsApp para pedir um feedback personalizado.
 
 1. Crie uma planilha em sheets.new e dê um nome a ela.
 2. Vá em Extensões > Apps Script, apague o que estiver lá e cole o conteúdo de `planilha/receber-respostas.gs`. Salve.
@@ -60,7 +60,7 @@ Confira o `git status` antes: o repositório é público, e o que for enviado fi
 
 ## Privacidade (LGPD)
 
-As respostas são dados pessoais de jovens, possivelmente menores de idade. O site em si não guarda nada, mas o que a pessoa enviar fica na planilha e no WhatsApp. O aviso da tela inicial promete: planilha privada, até 3 meses depois do fim do teste, apagar a pedido pelo código, e possível uso de IA. Cumpra e mantenha esse texto verdadeiro. Não compartilhe a planilha por link.
+As respostas são dados pessoais de jovens, possivelmente menores de idade. O site em si não guarda nada, mas quem finaliza o formulário tem as respostas salvas na planilha, e quem usa o WhatsApp também as deixa lá. O aviso da tela inicial promete: planilha privada, até 3 meses depois do fim do teste, apagar a pedido pelo código, e possível uso de IA. Cumpra e mantenha esse texto verdadeiro. Não compartilhe a planilha por link.
 
 ## Reativar a IA no futuro
 

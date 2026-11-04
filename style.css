@@ -597,8 +597,10 @@ body:has(.dialogo[open]) { overflow: hidden; }
 .cartao-enviar p { margin: 0 0 14px; }
 .acoes-enviar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .btn-enviar { width: 100%; }
-.btn-enviar:disabled { opacity: 0.7; cursor: default; }
-.cartao-enviar .nota-enviar { margin: 8px 0 0; font-size: 0.82rem; color: var(--suave); }
+.bloco-planilha { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--destaque-borda); }
+.cartao-enviar .bloco-planilha .copiar-status { margin: 0; }
+.bloco-planilha .btn-enviar { margin-top: 10px; }
+.nota-finalizar { font-size: 0.85rem; color: var(--suave); margin: 0 0 12px; }
 .btn-whatsapp {
   display: flex; align-items: center; justify-content: center;
   text-align: center;
@@ -608,7 +610,8 @@ body:has(.dialogo[open]) { overflow: hidden; }
 .btn-whatsapp:hover { background: #096332; border-color: #096332; }
 .cartao-enviar .copiar-status { min-height: 1.5em; margin: 10px 0 6px; font-size: 0.9rem; font-weight: 600; color: #0b7a3e; }
 :root[data-tema="escuro"] .cartao-enviar .copiar-status { color: #5ee0a0; }
-.cartao-enviar .copiar-status.falhou { color: var(--erro); }
+.cartao-enviar .copiar-status.falhou,
+:root[data-tema="escuro"] .cartao-enviar .copiar-status.falhou { color: var(--erro); }
 .rotulo-texto { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
 .texto-resultado {
   width: 100%;

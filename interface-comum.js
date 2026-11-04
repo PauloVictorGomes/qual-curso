@@ -64,10 +64,10 @@
         <select id="ent-faixa"><option value="">Prefiro não informar</option></select>
       </label>
       <p class="entrada-aviso">
-        <strong>Aviso de privacidade.</strong> Suas respostas só saem deste aparelho se você decidir enviar.
-        O que você enviar fica salvo numa planilha privada do Google, por até 3 meses depois do fim do teste,
-        e será analisado manualmente por uma pessoa, que pode usar uma ferramenta de inteligência artificial
-        para preparar o seu feedback. Você pode pedir para apagar a qualquer momento, pelo WhatsApp do projeto,
+        <strong>Aviso de privacidade.</strong> Ao finalizar o formulário, suas respostas são enviadas e ficam
+        salvas numa planilha privada do Google, por até 3 meses depois do fim do teste. Se desistir antes de
+        finalizar, nada é enviado. As respostas serão analisadas manualmente por uma pessoa, que pode usar uma
+        ferramenta de inteligência artificial para preparar o seu feedback. Você pode pedir para apagar a qualquer momento, pelo WhatsApp do projeto,
         informando o código que aparece no resultado. Use só um apelido e não escreva dados sensíveis
         (nome completo, telefone, endereço, saúde, religião). Se você tem menos de 18 anos, um responsável
         precisa estar ciente.

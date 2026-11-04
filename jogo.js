@@ -225,7 +225,10 @@
   }
 
   function finalizar() {
-    if (Comum.validarAbertas($("form-abertas"), abertas)) mostrarResultado();
+    if (!Comum.validarAbertas($("form-abertas"), abertas)) return;
+    mostrarResultado();
+    // Só aqui: os atalhos do modo de teste mostram o resultado sem enviar para a planilha
+    Resultado.enviar();
   }
 
   // ----- 5. Revelação e resultado -----
