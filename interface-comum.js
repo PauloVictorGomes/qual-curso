@@ -20,16 +20,11 @@
   function iniciarTema() {
     const botao = $("btn-tema");
     if (!botao) return;
-    const midiaEscura = window.matchMedia("(prefers-color-scheme: dark)");
 
     function aplicar(tema) {
       document.documentElement.setAttribute("data-tema", tema);
       botao.setAttribute("aria-label",
         tema === "escuro" ? "Mudar para tema claro" : "Mudar para tema escuro");
-    }
-
-    function salvo() {
-      try { return localStorage.getItem("tema"); } catch (e) { return null; }
     }
 
     botao.addEventListener("click", () => {
@@ -38,12 +33,7 @@
       try { localStorage.setItem("tema", novo); } catch (e) { /* modo privado: só não lembra */ }
     });
 
-    // Se a pessoa nunca escolheu, acompanha o tema do sistema
-    midiaEscura.addEventListener("change", e => {
-      if (!salvo()) aplicar(e.matches ? "escuro" : "claro");
-    });
-
-    aplicar(document.documentElement.getAttribute("data-tema") || (midiaEscura.matches ? "escuro" : "claro"));
+    aplicar(document.documentElement.getAttribute("data-tema") || "escuro");
   }
 
   // ----- Entrada: apelido, faixa etária, aviso de privacidade e consentimento -----
